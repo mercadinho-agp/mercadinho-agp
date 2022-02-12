@@ -4,6 +4,7 @@
     #mensagem{
       height: 85vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       color: grey; 
@@ -13,12 +14,8 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <% end %>
 
-<%= nav_bar brand: "Mercadinho AGP", brand_link: root_url,  responsive: true do %>
-  <%= menu_group pull: :right do %>
-    <%= menu_item "Login", root_url %>
-  <% end %>
-<% end %>
 
-<div id="mensagem" class="container" >
+<div id="mensagem">
   <h3>Bem-vindo ao Mercadinho AGP</h3>
+  <%= link_to "Ir às compras", '/' %>
 </div>
