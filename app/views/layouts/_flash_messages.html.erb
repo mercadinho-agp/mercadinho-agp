@@ -1,0 +1,16 @@
+<% if notice.present? %>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 alert alert-success alert-dismissible" role="alert">
+    <%= notice %>
+    </div>
+  </div>
+<% end %>
+<% if alert.present? %>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 alert alert-danger alert-dismissible" role="alert">
+      <%= alert %>
+    </div>
+  </div>
+<% end %>

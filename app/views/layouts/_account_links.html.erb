@@ -1,0 +1,9 @@
+
+<% if usuario_signed_in? %>
+    <%= menu_item current_usuario.email, edit_usuario_registration_path	 %>
+    <li>
+        <%= link_to t('app.menu.sign_out'), destroy_usuario_session_path, method: :delete, class: 'dropdown-item' %>
+    </li>
+<% else %>
+    <%= menu_item "Login", new_usuario_session_path %>
+<% end %>
