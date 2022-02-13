@@ -29,46 +29,23 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Sabonete</td>
-      <td>Frangancia de coco da praia</td>
-      <td>200</td>
-      <td>2.89</td>
-      <td>
-        <div>
-        <%= button_to "Edit", edit_produto_path(1), class:'btn btn-primary btn-sm', form: { "method" => "get" }%>&nbsp;
-        <%= button_to "Delete", 'produto/1', class:'btn btn-danger btn-sm', form: { "method" => "delete" },
-            data: {confirm: "Deseja realmente excluir este produto?  \nProduto: \#{}"} %>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Arroz</td>
-      <td>Tipo 1, 5kg</td>
-      <td>35</td>
-      <td>11.99</td>
-      <td>
-        <div>
-        <%= button_to "Edit", edit_produto_path(1), class:'btn btn-primary btn-sm' %>&nbsp;
-        <%= button_to "Delete", 'produto/1', class:'btn btn-danger btn-sm', form: { "method" => "delete" },
-            data: {confirm: "Deseja realmente excluir este produto? \nProduto: \#{}"}  %>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Refigerante</td>
-      <td>10</td>
-      <td>8.99</td>
-      <td>
-        <div>
-        <%= button_to "Edit", edit_produto_path(1), class:'btn btn-primary btn-sm' %>&nbsp;
-        <%= button_to "Delete", 'produto/1', class:'btn btn-danger btn-sm', form: { "method" => "delete" },
-            data: {confirm: "Deseja realmente excluir este produto?  \nProduto: \#{}"} %>
-        </div>
-      </td>
-    </tr>
+    <% @produtos.each do |produto| %>
+      <tr>
+        <th scope="row"><%= produto.id %></th>
+        <td><%= produto.nome %></td>
+        <td><%= produto.descricao %></td>
+        <td><%= produto.qnt %></td>
+        <td><%= produto.preco %></td>
+        <td>
+          <div>
+          <%= button_to "Edit", edit_produto_path(produto.id), class:'btn btn-primary btn-sm', form: { "method" => "get" }%>&nbsp;
+          
+          <%= link_to "Delete", "/produtos/#{produto.id}", method: :delete, class: 'btn btn-danger btn-sm',
+            data: {confirm: "Deseja realmente excluir este produto?  \nProduto: #{ produto.nome }"}%>
+          </div>
+
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
