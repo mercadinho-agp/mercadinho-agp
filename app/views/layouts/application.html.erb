@@ -15,6 +15,9 @@
       <%= menu_group do %>
         <%= menu_item "Produtos", produtos_path %>
       <% end %>
+      <%= menu_group do %>
+        <%= menu_item "Pedido", new_pedido_path %>
+      <% end %>
       <%= menu_group pull: :right do %>
         <%= render 'layouts/account_links' %>
       <% end %>
