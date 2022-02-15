@@ -25,8 +25,6 @@
             valorTotal.innerText = total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             inputTotal.value = total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
-
-        calculaTotal();
     </script>
 <% end %>
 
@@ -38,7 +36,7 @@
 </div>
 <br>
 
-<%= form_for( Pedido.new ) do |form| %>
+<%= form_for( @pedido ) do |form| %>
   <input type="hidden" name="total" id="input-total" value="">
   <table class="table table-hover">
     <thead>
@@ -47,7 +45,7 @@
       <th scope="col">Descricao</th>
       <th scope="col">Preço Unitario</th>
       <th scope="col">Qnt em estoque</th>
-      <th scope="col" width="115">Quantidade</th>
+      <th scope="col" width="115">Qnt Adquirida</th>
       </tr>
     </thead>
     <tbody>
@@ -58,7 +56,14 @@
           <td><%= produto.preco %></td>
           <td><%= produto.qnt %></td>
           <td>
-            <input type="number" name="produtos[<%= produto.id %>]" class="form-control" step="1" price="<%= produto.preco %>" onchange="calculaTotal()">
+            <% produto_comprado = @produtos_comprados.select { |i| i[0] == produto.id}[0] %>
+            <% if produto_comprado %>
+                <input type="number" name="produtos[<%= produto.id %>]" class="form-control" step="1" 
+                    value="<%= produto_comprado[1] %>" price="<%= produto.preco %>" onchange="calculaTotal()">
+            <% else %>
+                <input type="number" name="produtos[<%= produto.id %>]" class="form-control" step="1" 
+                    price="<%= produto.preco %>" onchange="calculaTotal()">
+            <% end %>
           </td>
         </tr>
       <% end %>
@@ -72,4 +77,10 @@
   </div>
 
   <%= form.submit "Fechar pedido", class: "btn btn-primary mb-2 font-weight-bold" %>
+  <%= link_to "Delete", "/pedidos/#{@pedido.id}", method: :delete, class: 'btn btn-danger',
+    data: {confirm: "Deseja realmente excluir este pedido?  \nPedido: #{ @pedido.id }"}%>
 <% end %>
+
+<script>
+    calculaTotal();
+</script>

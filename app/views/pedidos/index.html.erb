@@ -1,0 +1,101 @@
+<% content_for :head do %>
+    <style>
+        td div {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .float-right,
+        .row > .float-right {
+            float: right;
+        }
+        .font-weight-bold {
+            font-weight: 700!important;
+        }
+        .table-borderless thead th,
+        .table-borderless tbody th,
+        .table-borderless tbody td {
+            border: 0 !important;
+        }
+        .card {
+            position: relative;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 2px solid rgba(0,0,0,.125);
+            border-radius: 0.5rem;
+        }
+        .card-body,
+        .card-head {
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 1.5rem;
+        }
+        .flex,
+        .card-head { 
+            display: flex;
+        }
+        .card-head > a {
+            align-self: center;
+        }
+        .justify-content-between {
+            -ms-flex-pack: justify!important;
+            justify-content: space-between!important;
+        }
+    </style>
+<% end %>
+
+<h2>Pedidos Realizados</h2>
+<div class="row">
+    <div class="col-md-2 float-right">
+      <%= button_to "Novo pedido", new_pedido_path, class: "btn btn-primary", form: { "method" => "get" } %>
+    </div>
+</div>
+<br>
+
+
+<% @pedidos.each do |pedido| %>
+    <div class="card">
+        <div class="card-head justify-content-between">
+            <h4 class="font-weight-bold">Pedido #<%= pedido.id %></h4>
+            <%= link_to "Editar pedido", edit_pedido_path(pedido.id), class: "font-weight-bold" %>
+        </div>
+        <div class="card-body">        
+            <table class="table table-borderless table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Produto</th>
+                        <th scope="col">Preço unitário</th>
+                        <th scope="col">Quantidade</th>
+                        <th scope="col" class="flex float-right">Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% count = 0 %>
+                    <% pedido.compras.each do | compra| %>
+                    <tr>
+                        <% count += 1 %>
+                        <% produto = compra.produto %>
+                        <th scope="row"><%= count %></th>
+                        <td><%= produto.nome %></td>
+                        <td><%= number_to_currency(compra.sub_total / compra.qnt, unit: "R$ ", separator: ",", delimiter: ".") %></td>
+                        <td><%= compra.qnt %></td>
+                        <td class="flex float-right"><%= number_to_currency(compra.sub_total, unit: "R$ ", separator: ",", delimiter: ".")  %></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+            <hr>
+            <div class="flex justify-content-between">
+                    <p>Criado em <%= pedido.created_at %></span></p>
+                    <p class="font-weight-bold">Total <span id="valor-total"><%= number_to_currency(pedido.total, unit: "R$ ", separator: ",", delimiter: ".") %></span></p>
+            </div>
+        </div>
+    </div>
+    <br>
+<% end %>
