@@ -31,3 +31,10 @@
 
 en:
   hello: "Hello world"
+  views:
+    pagination:
+      first: "&laquo; Primeira"
+      last: "Ultima &raquo;"
+      previous: "&lsaquo; Anterior"
+      next: "Proxima &rsaquo;"
+      truncate: "&hellip;"

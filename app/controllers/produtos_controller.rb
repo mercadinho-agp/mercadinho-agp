@@ -1,8 +1,10 @@
+require 'csv'
+
 class ProdutosController < ApplicationController
     before_action :authenticate_usuario!
 
     def index
-        @produtos = Produto.order(id: :asc)
+        @produtos = Produto.order(id: :asc).page(params[ :page ]).per(5)
     end
 
     def create
@@ -32,5 +34,16 @@ class ProdutosController < ApplicationController
         id =  params[:id]
         Produto.destroy id
         redirect_to produtos_path
+    end
+
+    def export
+        @produtos = Produto.order(id: :asc)
+
+        respond_to do |format|
+            format.csv do
+                response.headers['Content-Type'] = 'text/csv'
+                response.headers['Content-Disposition'] = "attachment; filename=listagem.csv"
+            end
+        end
     end
 end

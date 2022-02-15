@@ -7,13 +7,18 @@
         .row .float-right{
             float: right;
         }
+        .flex {
+          display: flex;
+        }
     </style>
 <% end %>
 
 <h2>Produtos do Mercadinho</h2>
 <div class="row">
-    <div class="col-md-2 float-right">
-      <%= button_to "Novo Produto", new_produto_url, class: "btn btn-primary", form: { "method" => "get" } %>
+    <div class="col-md-3 float-right flex">
+      <%= button_to "Novo Produto", new_produto_url, class: "btn btn-primary", form: { "method" => "get" } %>&nbsp;
+
+      <%= link_to "Exportar CSV", "/produtos/export.csv", class: 'btn btn-success'%>
     </div>
 </div>
 <br>
@@ -35,12 +40,12 @@
         <td><%= produto.nome %></td>
         <td><%= produto.descricao %></td>
         <td><%= produto.qnt %></td>
-        <td><%= produto.preco %></td>
+        <td><%= number_to_currency(produto.preco, unit: "R$ ", separator: ",", delimiter: ".")  %></td>
         <td>
           <div>
-          <%= button_to "Edit", edit_produto_path(produto.id), class:'btn btn-primary btn-sm', form: { "method" => "get" }%>&nbsp;
+          <%= button_to "Editar", edit_produto_path(produto.id), class:'btn btn-primary btn-sm', form: { "method" => "get" }%>&nbsp;
           
-          <%= link_to "Delete", "/produtos/#{produto.id}", method: :delete, class: 'btn btn-danger btn-sm',
+          <%= link_to "Excluir", "/produtos/#{produto.id}", method: :delete, class: 'btn btn-danger btn-sm',
             data: {confirm: "Deseja realmente excluir este produto?  \nProduto: #{ produto.nome }"}%>
           </div>
 
@@ -49,3 +54,5 @@
     <% end %>
   </tbody>
 </table>
+
+<%= paginate @produtos %>
