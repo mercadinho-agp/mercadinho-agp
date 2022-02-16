@@ -7,9 +7,6 @@ class PedidosController < ApplicationController
         else
             @pedidos = Pedido.order(created_at: :asc).where(usuario_id: current_usuario.id)
         end
-        puts @pedidos[0].inspect
-        compras = @pedidos[6].compras
-        puts compras.inspect
     end
 
     def new
@@ -22,11 +19,13 @@ class PedidosController < ApplicationController
         pedido = Pedido.create status: false, total: total, usuario_id: current_usuario.id
 
         produtos.each do |id,qnt|
-            produto = Produto.find(id)
-            sub_total = qnt.to_i * produto.preco.to_f
-            compra = Compra.create qnt: qnt, sub_total: sub_total, pedido_id: pedido.id, produto_id: produto.id
-            produto.qnt -= qnt.to_i
-            produto.save
+            if qnt.to_i > 0
+                produto = Produto.find(id)
+                sub_total = qnt.to_i * produto.preco.to_f
+                compra = Compra.create qnt: qnt, sub_total: sub_total, pedido_id: pedido.id, produto_id: produto.id
+                produto.qnt -= qnt.to_i
+                produto.save
+            end
         end
 
         pedido.status = true
@@ -57,7 +56,7 @@ class PedidosController < ApplicationController
         produtos.each do |id,qnt|
             compra = Compra.find_or_create_by(pedido_id: pedido.id, produto_id: id)
             produto = Produto.find(id)
-            produto.qnt += compra.qnt - qnt.to_i
+            produto.qnt += compra.qnt.to_i - qnt.to_i
             sub_total = qnt.to_i * produto.preco.to_f
             compra.qnt = qnt
             compra.sub_total = sub_total
@@ -82,6 +81,7 @@ class PedidosController < ApplicationController
 
     def destroy
         id =  params[:id]
+        Compra.where(pedido_id: id).destroy_all
         Pedido.destroy id
         redirect_to pedidos_path
     end

@@ -83,7 +83,7 @@
                         <% produto = compra.produto %>
                         <th scope="row"><%= count %></th>
                         <td><%= produto.nome %></td>
-                        <td><%= number_to_currency(compra.sub_total / compra.qnt, unit: "R$ ", separator: ",", delimiter: ".") %></td>
+                        <td><%= number_to_currency(compra.sub_total.to_f / compra.qnt.to_i, unit: "R$ ", separator: ",", delimiter: ".") %></td>
                         <td><%= compra.qnt %></td>
                         <td class="flex float-right"><%= number_to_currency(compra.sub_total, unit: "R$ ", separator: ",", delimiter: ".")  %></td>
                     </tr>

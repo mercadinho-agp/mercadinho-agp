@@ -44,6 +44,26 @@ class ProdutosController < ApplicationController
                 response.headers['Content-Type'] = 'text/csv'
                 response.headers['Content-Disposition'] = "attachment; filename=listagem.csv"
             end
+            format.pdf do
+                # pdf = Prawn::Document.new
+                # pdf.text "Listagem de produtos", :size => 30, :style => :bold
+                # pdf.move_down(30)
+                # items = @produtos.map do |prod|
+                #     [ 
+                #         prod.id, 
+                #         prod.nome, 
+                #         prod.descricao, 
+                #         prod.preco, 
+                #         prod.qnt, 
+                #         prod.created_at, 
+                #         prod.updated_at
+                #     ]
+                # end
+
+                # pdf.table items
+                pdf = ProdutoPdf.new(@produtos)
+                send_data pdf.render, filename: "listagem.pdf", type: "application/pdf", disposition: "inline"
+            end
         end
     end
 end
